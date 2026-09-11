@@ -3,14 +3,11 @@ import gradio as gr
 from transformers import pipeline
 
 # Download model automatically from Hugging Face
-text_summary = pipeline(
-    "summarization",
-    model="sshleifer/distilbart-cnn-12-6"
-)
-
+model_path = "google-t5/t5-small"
+text_summary = pipeline("text2text-generation", model=model_path)
 def summary(input):
-    output = text_summary(input)
-    return output[0]["summary_text"]
+    output = text_summary("summarize: " + input)
+    return output[0]['generated_text']
 
 demo = gr.Interface(
     fn=summary,
